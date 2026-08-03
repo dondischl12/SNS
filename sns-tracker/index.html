@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SNS Tracker</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦈</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+  <div class="aurora" aria-hidden="true">
+    <span class="blob blob-a"></span>
+    <span class="blob blob-b"></span>
+    <span class="blob blob-c"></span>
+  </div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="hero">
+    <div class="badge">◉ live log — no database, no backend</div>
+    <h1 class="title"><span class="fin">🦈</span> SNS <span class="grad">Tracker</span></h1>
+    <p class="subtitle">The official ledger. <span class="pill">rSNS = 0.5 SNS</span></p>
+    <div class="actions">
+      <a id="log-sns" class="btn btn-primary" target="_blank" rel="noopener">
+        <span class="btn-glow"></span>
+        <span class="btn-label">Log a SNS</span>
+      </a>
+      <a id="log-rsns" class="btn btn-secondary" target="_blank" rel="noopener">
+        <span class="btn-glow"></span>
+        <span class="btn-label">Log a rSNS</span>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="stats" id="stats">
+      <div class="stat-card glass">
+        <span class="stat-value" id="stat-total" data-target="0">0</span>
+        <span class="stat-label">Total SNS units</span>
+      </div>
+      <div class="stat-card glass">
+        <span class="stat-value" id="stat-count" data-target="0">0</span>
+        <span class="stat-label">Entries logged</span>
+      </div>
+      <div class="stat-card glass stat-leader-card">
+        <span class="stat-value" id="stat-leader">–</span>
+        <span class="stat-label">Current leader</span>
+      </div>
+    </section>
+
+    <section class="board glass">
+      <h2><span class="h-icon">🏆</span> Leaderboard</h2>
+      <div class="board-scroll">
+        <table id="leaderboard">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nickname</th>
+              <th>SNS</th>
+              <th>rSNS</th>
+              <th>Total</th>
+              <th class="bar-col">Share</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="empty" id="board-empty" hidden>No entries yet. Be the first. 🫡</p>
+    </section>
+
+    <section class="feed glass">
+      <h2><span class="h-icon">📡</span> Recent activity</h2>
+      <ul id="feed-list"></ul>
+      <p class="empty" id="feed-empty" hidden>Nothing logged yet.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Data lives in <code>data/log.json</code>, written by GitHub Actions from issue submissions. No database, no backend.</p>
+  </footer>
+
+  <div id="confetti-root" aria-hidden="true"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
