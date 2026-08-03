@@ -1,0 +1,81 @@
+name: Log SNS Entry
+
+on:
+  workflow_dispatch:
+    inputs:
+      nickname:
+        description: Nickname
+        required: true
+        type: string
+      type:
+        description: Type
+        required: true
+        type: choice
+        options:
+          - SNS
+          - rSNS
+      note:
+        description: Note (optional)
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  log:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate input and append to log
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const { execSync } = require('child_process');
+
+            const inputs = context.payload.inputs || {};
+            const nickname = (inputs.nickname || '').trim().slice(0, 40);
+            const type = (inputs.type || '').trim();
+            const note = (inputs.note || '').trim().replace(/[\r\n]+/g, ' ').slice(0, 280);
+
+            const roster = JSON.parse(fs.readFileSync('data/roster.json', 'utf8'));
+
+            if (!roster.includes(nickname)) {
+              core.setFailed(`Rejected: "${nickname}" is not in data/roster.json`);
+              return;
+            }
+            if (!['SNS', 'rSNS'].includes(type)) {
+              core.setFailed(`Rejected: invalid type "${type}"`);
+              return;
+            }
+
+            const value = type === 'SNS' ? 1 : 0.5;
+            const dataPath = 'data/log.json';
+            let log = [];
+            if (fs.existsSync(dataPath)) {
+              const raw = fs.readFileSync(dataPath, 'utf8').trim();
+              log = raw ? JSON.parse(raw) : [];
+            }
+
+            log.push({
+              id: Date.now(),
+              nickname,
+              type,
+              value,
+              note,
+              timestamp: new Date().toISOString(),
+            });
+
+            fs.writeFileSync(dataPath, JSON.stringify(log, null, 2) + '\n');
+
+            execSync('git config user.name "github-actions[bot]"');
+            execSync('git config user.email "github-actions[bot]@users.noreply.github.com"');
+            execSync('git add data/log.json');
+            try {
+              execSync(`git commit -m "Log ${type} for ${nickname}"`);
+              execSync('git push');
+            } catch (e) {
+              console.log('Nothing to commit or push failed:', e.message);
+            }
