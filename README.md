@@ -14,8 +14,8 @@ No backend, no database, no login. You pick your nickname from a dropdown and hi
 ## Setup
 
 1. Create a **public** GitHub repo and push this folder's contents to it (root of the default branch, e.g. `main`).
-2. In repo Settings → Pages, set source to "Deploy from a branch", branch = your default branch, folder = `/ (root)`.
-3. In repo Settings → Actions → General → Workflow permissions, make sure "Read and write permissions" is enabled (needed so the Action can commit back to the repo).
+2. In repo Settings → Pages, set **Source** to **"GitHub Actions"** (not "Deploy from a branch" — the deploy workflow handles publishing).
+3. In repo Settings → Actions → General → Workflow permissions, make sure "Read and write permissions" is enabled (needed so `log-entry.yml` can commit `data/log.json` back to the repo).
 4. Edit [data/roster.json](data/roster.json) with your coworkers' nicknames (no real names).
 5. Create a **fine-grained personal access token** at https://github.com/settings/personal-access-tokens/new:
    - Resource owner: your account
@@ -23,21 +23,21 @@ No backend, no database, no login. You pick your nickname from a dropdown and hi
    - Permissions → Repository permissions:
      - **Actions: Read and write**
      - **Contents: Read-only**
-   - Set an expiration (30–90 days) — you'll need to regenerate and re-paste it when it expires.
-6. Edit [app.js](app.js) at the top:
-   - `REPO` → `"your-username/your-repo-name"` (already set to `dondischl12/SNS`)
-   - `BRANCH` → your default branch name (already set to `main`)
-   - `GH_TOKEN` → paste the token from step 5
-7. Commit/push. Visit the Pages URL GitHub gives you.
-8. Share the link with your coworkers — no GitHub account needed to use it.
+   - Set an expiration (30–90 days).
+6. Add that token as a **repo secret**, NOT in any file: Settings → Secrets and variables → Actions → "New repository secret" → name it `DISPATCH_TOKEN`, paste the value.
+7. Confirm `REPO` and `BRANCH` at the top of [app.js](app.js) match your repo (already set to `dondischl12/SNS` / `main`). Leave `GH_TOKEN` as `"__GH_TOKEN__"` — the deploy workflow fills it in automatically.
+8. Commit/push. The `deploy.yml` workflow builds and publishes the site, injecting the real token only into the deployed copy.
+9. Share the Pages link with your coworkers — no GitHub account needed to use it.
 
 ## ⚠️ Security tradeoff, read this
 
-`GH_TOKEN` lives in a plain-text client-side file that anyone visiting the public site can view (view-source, dev tools, or just browsing the repo). That's unavoidable without standing up a real backend. To limit the damage:
+The token is **never committed to git** — it's stored as an encrypted Actions secret (`DISPATCH_TOKEN`) and swapped into the placeholder in `app.js` only during the deploy step, by [.github/workflows/deploy.yml](.github/workflows/deploy.yml). This matters for a **public** repo specifically: GitHub's secret scanning auto-revokes any of its own tokens the moment it detects one committed to a public repo, even if you click through push protection — so pasting the real token directly into a tracked file simply doesn't work here, it'll die on the next push.
+
+That said, the token is still visible in the **final deployed page's source** to anyone who visits the site — that part is unavoidable for a static site with no backend, since the browser itself needs the token to call the GitHub API. To limit the damage from that:
 
 - The token is scoped to **only this repo**, with **Actions: write** and **Contents: read-only** — it can trigger the logging workflow but **cannot push commits or edit any file**, including this site's own code. Worst case if it leaks: someone spams fake entries into `data/log.json` or burns your Actions minutes. They can't deface the site or run arbitrary code on anyone's machine.
 - The workflow itself re-validates the nickname against `data/roster.json` and the type against `SNS`/`rSNS` server-side, so a leaked token can't inject arbitrary nicknames or values, only spam existing valid combinations.
-- Rotate the token occasionally (delete + regenerate at the same settings URL, then update `GH_TOKEN` in `app.js`) if you ever suspect abuse.
+- Rotate the token occasionally: generate a new one, update the `DISPATCH_TOKEN` secret (Settings → Secrets and variables → Actions), then re-run the deploy workflow (or just push anything to `main`).
 
 ## Data format
 

@@ -2,16 +2,16 @@ const REPO = "dondischl12/SNS";
 const BRANCH = "main";
 const WORKFLOW_FILE = "log-entry.yml";
 
-// SECURITY NOTE: this token is embedded in a public, client-side file — anyone
-// who opens dev tools or views source can read it. Create a fine-grained PAT
-// scoped to ONLY this repo with:
-//   Actions:  Read and write
-//   Contents: Read-only
-// That scope can trigger this workflow but cannot push commits or edit files
-// directly, so the worst case if it leaks is someone spamming fake log entries
-// or burning your Actions minutes — not a site takeover. Rotate it periodically
-// from https://github.com/settings/personal-access-tokens
-const GH_TOKEN = "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";
+// SECURITY NOTE: the real token is NOT stored here. It's kept as an encrypted
+// GitHub Actions repo secret and swapped into this placeholder only at deploy
+// time by .github/workflows/deploy.yml — so it never appears in git history
+// (committing the raw token directly gets it auto-revoked by GitHub's secret
+// scanning the moment it's pushed to a public repo). It's still visible in the
+// final deployed page source to visitors, same as before — that's unavoidable
+// for a static site with no backend — but at least git history stays clean and
+// rotating the token no longer means fighting push protection.
+// Scope this token to ONLY this repo, with Actions: Read and write, Contents: Read-only.
+const GH_TOKEN = "__GH_TOKEN__";
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
