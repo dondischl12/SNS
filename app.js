@@ -11,7 +11,7 @@ const WORKFLOW_FILE = "log-entry.yml";
 // directly, so the worst case if it leaks is someone spamming fake log entries
 // or burning your Actions minutes — not a site takeover. Rotate it periodically
 // from https://github.com/settings/personal-access-tokens
-const GH_TOKEN = "PASTE_YOUR_FINE_GRAINED_TOKEN_HERE";
+const GH_TOKEN = "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";
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
