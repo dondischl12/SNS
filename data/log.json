@@ -54,5 +54,13 @@
     "value": 1,
     "note": "Busy morning",
     "timestamp": "2026-08-03T15:36:15.672Z"
+  },
+  {
+    "id": 1785772217675,
+    "nickname": "C Logger",
+    "type": "SNS",
+    "value": 1,
+    "note": "20 Minutes",
+    "timestamp": "2026-08-03T15:50:17.675Z"
   }
 ]
