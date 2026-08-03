@@ -14,5 +14,13 @@
     "value": 0.5,
     "note": "lovely!",
     "timestamp": "2026-08-03T14:51:42.034Z"
+  },
+  {
+    "id": 1785769427386,
+    "nickname": "Private Plopper",
+    "type": "SNS",
+    "value": 1,
+    "note": "final diagnostic check",
+    "timestamp": "2026-08-03T15:03:47.386Z"
   }
 ]
