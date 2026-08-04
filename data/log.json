@@ -126,5 +126,13 @@
     "value": 1,
     "note": "fueled by free breakfast",
     "timestamp": "2026-08-04T15:56:29.873Z"
+  },
+  {
+    "id": 1785869376507,
+    "nickname": "C Logger",
+    "type": "SNS",
+    "value": 1,
+    "note": "Went for an SNBS, got an SNS instead",
+    "timestamp": "2026-08-04T18:49:36.507Z"
   }
 ]
