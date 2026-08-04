@@ -78,5 +78,13 @@
     "value": 1,
     "note": "20 Minutes",
     "timestamp": "2026-08-04T13:05:05.066Z"
+  },
+  {
+    "id": 1785849662143,
+    "nickname": "dedosdequeso",
+    "type": "SNS",
+    "value": 1,
+    "note": "early bird gets the poop",
+    "timestamp": "2026-08-04T13:21:02.143Z"
   }
 ]
