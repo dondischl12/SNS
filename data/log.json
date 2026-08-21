@@ -422,5 +422,13 @@
     "value": 0.5,
     "note": "Damj",
     "timestamp": "2026-08-21T13:57:40.766Z"
+  },
+  {
+    "id": 1787323939097,
+    "nickname": "C Logger",
+    "type": "SNS",
+    "value": 1,
+    "note": "20 Minutes",
+    "timestamp": "2026-08-21T14:52:19.097Z"
   }
 ]
