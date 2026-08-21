@@ -414,5 +414,13 @@
     "value": 1,
     "note": "20 Minutes",
     "timestamp": "2026-08-20T16:12:20.770Z"
+  },
+  {
+    "id": 1787320660766,
+    "nickname": "dedosdequeso",
+    "type": "rSNS",
+    "value": 0.5,
+    "note": "Damj",
+    "timestamp": "2026-08-21T13:57:40.766Z"
   }
 ]
