@@ -526,5 +526,13 @@
     "value": 1,
     "note": "20 Minutes",
     "timestamp": "2026-09-18T14:14:46.038Z"
+  },
+  {
+    "id": 1790098779112,
+    "nickname": "C Logger",
+    "type": "SNS",
+    "value": 1,
+    "note": "Big one",
+    "timestamp": "2026-09-22T17:39:39.112Z"
   }
 ]
